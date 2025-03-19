@@ -8,6 +8,7 @@ import (
 type Config struct {
 	DB struct {
 		Database string
+		URL      string
 	} `toml:"db"`
 
 	Info struct {
