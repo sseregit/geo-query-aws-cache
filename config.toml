@@ -1,6 +1,6 @@
 [db]
 database = "mysql"
-url = ""
+url = "metting:metting@tcp(localhost:3306)/metting"
 
 [aws]
 key = ""
