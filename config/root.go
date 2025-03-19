@@ -17,7 +17,7 @@ type Config struct {
 	} `toml:"info"`
 
 	Aws struct {
-		Keys      string
+		Key       string
 		SecretKey string
 		Region    string
 		Bucket    string
