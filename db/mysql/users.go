@@ -1,9 +1,9 @@
 package mysql
 
 import (
-	"context"
 	"encoding/json"
 	. "geo-query-aws-cache/db/mysql/query"
+	"geo-query-aws-cache/db/mysql/types"
 	"log"
 )
 
@@ -34,4 +34,12 @@ func (d *DB) RegisterUser(user, description string, hobby []string, latitude, ha
 		}
 	}
 	return nil
+}
+
+func (d *DB) GetUser(userName string) (*types.User, error) {
+
+}
+
+func (d *DB) AroundUser(userName string, latitude, hardness float64, searchRange, limit int64) ([]*types.User, error) {
+
 }

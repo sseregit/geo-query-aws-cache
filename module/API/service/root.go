@@ -4,6 +4,7 @@ import (
 	"geo-query-aws-cache/aws"
 	"geo-query-aws-cache/config"
 	"geo-query-aws-cache/db"
+	. "geo-query-aws-cache/db/mysql/types"
 	"geo-query-aws-cache/module/API/types"
 	"log"
 	"mime/multipart"
@@ -18,7 +19,7 @@ type service struct {
 type ServiceImpl interface {
 	RegisterUser(req types.RegisterUserReq) error
 	UploadFile(userName string, header *multipart.FileHeader, file multipart.File) error
-	FindAroundUsers(userName string, searchRange, limit int64) (interface{}, error)
+	FindAroundUsers(userName string, searchRange, limit int64) ([]*User, error)
 }
 
 func NewService(
@@ -49,10 +50,30 @@ createAgain:
 	return nil
 }
 
-func (s *service) UploadFile(userName string, header *multipart.FileHeader, file multipart.File) error {
-	return nil
+func (s *service) FindAroundUsers(userName string, searchRange, limit int64) ([]*User, error) {
+	if limit == 0 {
+		limit = 5
+	}
+
+	if u, err := s.getUser(userName); err != nil {
+		return nil, err
+	} else if users, err := s.db.MySQL.AroundUser(u.UserName, u.Latitude, u.Hardness, searchRange, limit); err != nil {
+		return nil, err
+	} else {
+		return users, nil
+	}
+
+	return nil, nil
 }
 
-func (s *service) FindAroundUsers(userName string, searchRange, limit int64) (interface{}, error) {
-	return nil, nil
+func (s *service) getUser(userName string) (*User, error) {
+	if u, err := s.db.MySQL.GetUser(userName); err != nil {
+		return nil, err
+	} else {
+		return u, nil
+	}
+}
+
+func (s *service) UploadFile(userName string, header *multipart.FileHeader, file multipart.File) error {
+	return nil
 }
