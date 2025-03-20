@@ -46,8 +46,6 @@ createAgain:
 		log.Println("Success To Create New User", "name", req.UserName)
 		return nil
 	}
-
-	return nil
 }
 
 func (s *service) FindAroundUsers(userName string, searchRange, limit int64) ([]*User, error) {
@@ -62,8 +60,6 @@ func (s *service) FindAroundUsers(userName string, searchRange, limit int64) ([]
 	} else {
 		return users, nil
 	}
-
-	return nil, nil
 }
 
 func (s *service) getUser(userName string) (*User, error) {

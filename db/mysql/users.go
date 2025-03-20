@@ -37,9 +37,48 @@ func (d *DB) RegisterUser(user, description string, hobby []string, latitude, ha
 }
 
 func (d *DB) GetUser(userName string) (*types.User, error) {
+	var res types.User
 
+	var image interface{}
+	var hobby interface{}
+
+	if err := d.db.QueryRow(GetUserByName, userName).Scan(&res.UserName, &image, &res.Description, &hobby, &res.Latitude, &res.Hardness); err != nil {
+		return nil, err
+	} else if err = unMarshalToField(
+		[]interface{}{image, hobby},
+		&res.Image, &res.Hobby,
+	); err != nil {
+		return nil, err
+	} else {
+		return &res, nil
+	}
 }
 
 func (d *DB) AroundUser(userName string, latitude, hardness float64, searchRange, limit int64) ([]*types.User, error) {
+	if rows, err := d.db.Query(GetAroundUsers, userName, hardness, latitude, searchRange, hardness, latitude, limit); err != nil {
+		return nil, err
+	} else {
+		defer rows.Close()
 
+		var result []*types.User
+
+		for rows.Next() {
+			var res types.User
+
+			var image interface{}
+			var hobby interface{}
+
+			if err := rows.Scan(&res.UserName, &image, &res.Description, &hobby, &res.Latitude, &res.Hardness); err != nil {
+				return nil, err
+			} else if err = unMarshalToField(
+				[]interface{}{image, hobby},
+				&res.Image, &res.Hobby,
+			); err != nil {
+				return nil, err
+			} else {
+				result = append(result, &res)
+			}
+		}
+		return result, nil
+	}
 }
