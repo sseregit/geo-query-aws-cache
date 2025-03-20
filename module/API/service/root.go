@@ -5,6 +5,7 @@ import (
 	"geo-query-aws-cache/config"
 	"geo-query-aws-cache/db"
 	"geo-query-aws-cache/module/API/types"
+	"log"
 	"mime/multipart"
 )
 
@@ -30,6 +31,21 @@ func NewService(
 }
 
 func (s *service) RegisterUser(req types.RegisterUserReq) error {
+	var retryCount = 0
+createAgain:
+	if err := s.db.MySQL.RegisterUser(req.UserName, req.Descsription, req.Hobby, req.Latitude, req.Hardness); err != nil {
+		retryCount++
+		if retryCount < 3 {
+			goto createAgain
+		} else {
+			log.Println("Failed To Create User", "user", req.UserName, "err", err.Error())
+			return err
+		}
+	} else {
+		log.Println("Success To Create New User", "name", req.UserName)
+		return nil
+	}
+
 	return nil
 }
 
