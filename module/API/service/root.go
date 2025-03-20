@@ -4,6 +4,8 @@ import (
 	"geo-query-aws-cache/aws"
 	"geo-query-aws-cache/config"
 	"geo-query-aws-cache/db"
+	"geo-query-aws-cache/module/API/types"
+	"mime/multipart"
 )
 
 type service struct {
@@ -13,6 +15,9 @@ type service struct {
 }
 
 type ServiceImpl interface {
+	RegisterUser(req types.RegisterUserReq) error
+	UploadFile(userName string, header *multipart.FileHeader, file multipart.File) error
+	FindAroundUsers(userName string, searchRange, limit int64) (interface{}, error)
 }
 
 func NewService(
@@ -20,6 +25,18 @@ func NewService(
 	db *db.DBRoot,
 	aws *aws.Aws,
 ) ServiceImpl {
-	s := service{cfg, db, aws}
+	s := &service{cfg, db, aws}
 	return s
+}
+
+func (s *service) RegisterUser(req types.RegisterUserReq) error {
+	return nil
+}
+
+func (s *service) UploadFile(userName string, header *multipart.FileHeader, file multipart.File) error {
+	return nil
+}
+
+func (s *service) FindAroundUsers(userName string, searchRange, limit int64) (interface{}, error) {
+	return nil, nil
 }

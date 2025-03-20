@@ -23,6 +23,10 @@ func (u *user) RegisterUser(c *gin.Context) {
 
 	if err := c.ShouldBind(&req); err != nil {
 		res(c, http.StatusUnprocessableEntity, err.Error())
+	} else if err = u.n.s.RegisterUser(req); err != nil {
+		res(c, http.StatusInternalServerError, err.Error())
+	} else {
+		res(c, http.StatusOK, "Success")
 	}
 }
 
@@ -33,7 +37,11 @@ func (u *user) UploadImage(c *gin.Context) {
 	if err != nil || name == "" {
 		res(c, http.StatusUnprocessableEntity, err.Error())
 	} else {
-
+		if err = u.n.s.UploadFile(name, header, file); err != nil {
+			res(c, http.StatusInternalServerError, err.Error())
+		} else {
+			res(c, http.StatusOK, "Success")
+		}
 	}
 }
 
@@ -42,5 +50,9 @@ func (u *user) AroundUsers(c *gin.Context) {
 
 	if err := c.ShouldBindQuery(&req); err != nil {
 		res(c, http.StatusUnprocessableEntity, err.Error())
+	} else if result, err := u.n.s.FindAroundUsers(req.UserName, req.Range, req.Limit); err != nil {
+		res(c, http.StatusInternalServerError, err.Error())
+	} else {
+		res(c, http.StatusOK, result)
 	}
 }
