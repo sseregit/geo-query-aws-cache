@@ -18,7 +18,8 @@ func NewNetwork(
 	s service.ServiceImpl,
 ) *Network {
 	n := &Network{cfg: cfg, s: s, e: gin.New(), port: cfg.Info.Port}
-
+	setGin(n.e)
+	userRouter(n)
 	return n
 }
 

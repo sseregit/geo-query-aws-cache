@@ -14,7 +14,7 @@ func (d *DB) RegisterUser(user, description string, hobby []string, latitude, ha
 		if json, err := json.Marshal(hobby); err != nil {
 			return err
 		} else {
-			if result, err := tx.Exec(InsertIgnoreUser, user, description, json); err == nil {
+			if result, err := tx.Exec(InsertIgnoreUser, user, description, json); err != nil {
 				tx.Rollback()
 				return err
 			} else {
@@ -22,7 +22,7 @@ func (d *DB) RegisterUser(user, description string, hobby []string, latitude, ha
 				log.Println("Success To Insert User", "count", count)
 			}
 
-			if result, err := tx.Exec(InsertIgnoreUserLocation, user, latitude, hardness, latitude, hardness); err == nil {
+			if result, err := tx.Exec(InsertIgnoreUserLocation, user, latitude, hardness, latitude, hardness); err != nil {
 				tx.Rollback()
 				return err
 			} else {

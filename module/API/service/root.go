@@ -34,7 +34,7 @@ func NewService(
 func (s *service) RegisterUser(req types.RegisterUserReq) error {
 	var retryCount = 0
 createAgain:
-	if err := s.db.MySQL.RegisterUser(req.UserName, req.Descsription, req.Hobby, req.Latitude, req.Hardness); err != nil {
+	if err := s.db.MySQL.RegisterUser(req.UserName, req.Description, req.Hobby, req.Latitude, req.Hardness); err != nil {
 		retryCount++
 		if retryCount < 3 {
 			goto createAgain

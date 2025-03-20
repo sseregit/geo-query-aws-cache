@@ -1,0 +1,14 @@
+### create user
+POST {{host}}/register-user
+Content-Type: application/json
+
+{
+  "userName": "Sample Name 3",
+  "description": "test",
+  "hobby": ["study", "coding"],
+  "latitude": 87.3243,
+  "hardness": 120.2321
+}
+
+### find around friends
+GET {{host}}/around-users?user=Sample Name&range=100000000&limit=5
