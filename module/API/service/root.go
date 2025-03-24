@@ -89,7 +89,14 @@ func (s *service) UploadFile(userName string, header *multipart.FileHeader, file
 		if out, err := os.Create(filePath); err != nil {
 			return err
 		} else {
-			defer out.Close()
+
+			defer func() {
+				defer out.Close()
+
+				if err = os.Remove(filePath); err != nil {
+					log.Println("Failed to Remove File", "path", filePath)
+				}
+			}()
 
 			if _, err := io.Copy(out, file); err != nil {
 				return err
