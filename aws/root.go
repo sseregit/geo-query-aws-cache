@@ -34,12 +34,12 @@ func NewAws(cfg *config.Config) *Aws {
 	return a
 }
 
-func (s *Aws) PutFileToS3(key, tag string, file *os.File) error {
+func (s *Aws) PutFileToS3(key, extension string, file *os.File) error {
 	input := &s3.PutObjectInput{
 		Bucket:      aws.String(s.Bucket),
 		Key:         aws.String(key),
 		Body:        file,
-		ContentType: aws.String(fmt.Sprintf("%s/%s", "image", tag)),
+		ContentType: aws.String(fmt.Sprintf("%s/%s", "image", extension)),
 		ACL:         aws.String("public-read"),
 	}
 
