@@ -4,3 +4,6 @@
 go.sum
 *.env.json
 .env
+
+/image-resize-lecture/node_modules
+*.zip

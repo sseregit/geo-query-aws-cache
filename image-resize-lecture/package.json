@@ -1,0 +1,15 @@
+{
+  "name": "image-resize-lecture",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "package": "zip -r lambda.zip ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "sharp": "^0.33.5"
+  }
+}
