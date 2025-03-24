@@ -1,11 +1,13 @@
 package aws
 
 import (
+	"fmt"
 	"geo-query-aws-cache/config"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
+	"os"
 )
 
 type Aws struct {
@@ -30,4 +32,17 @@ func NewAws(cfg *config.Config) *Aws {
 	}
 
 	return a
+}
+
+func (s *Aws) PutFileToS3(key, tag string, file *os.File) error {
+	input := &s3.PutObjectInput{
+		Bucket:      aws.String(s.Bucket),
+		Key:         aws.String(key),
+		Body:        file,
+		ContentType: aws.String(fmt.Sprintf("%s/%s", "image", tag)),
+		ACL:         aws.String("public-read"),
+	}
+
+	_, err := s.S3.PutObject(input)
+	return err
 }

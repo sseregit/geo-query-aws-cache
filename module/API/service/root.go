@@ -1,13 +1,18 @@
 package service
 
 import (
+	"errors"
+	"fmt"
 	"geo-query-aws-cache/aws"
 	"geo-query-aws-cache/config"
 	"geo-query-aws-cache/db"
 	. "geo-query-aws-cache/db/mysql/types"
 	"geo-query-aws-cache/module/API/types"
+	"io"
 	"log"
 	"mime/multipart"
+	"os"
+	"path/filepath"
 )
 
 type service struct {
@@ -71,5 +76,27 @@ func (s *service) getUser(userName string) (*User, error) {
 }
 
 func (s *service) UploadFile(userName string, header *multipart.FileHeader, file multipart.File) error {
+	fileName := header.Filename
+	fileExt := filepath.Ext(fileName)
+
+	if !solveImageExtension(fileExt) {
+		return errors.New("Failed To Solve Extension")
+	} else {
+		path := "./temp"
+		filePath := fmt.Sprintf("%s/%s", path, fileName)
+
+		if out, err := os.Create(filePath); err != nil {
+			return err
+		} else {
+			defer out.Close()
+
+			if _, err := io.Copy(out, file); err != nil {
+				return err
+			}
+		}
+	}
+
+	//s.aws.PutFileToS3("", "", nil)
+
 	return nil
 }

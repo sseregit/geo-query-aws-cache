@@ -12,3 +12,19 @@ Content-Type: application/json
 
 ### find around friends
 GET {{host}}/around-users?user=Sample Name&range=100000000&limit=5
+
+###  upload user image
+POST {{host}}/upload-image
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="userName"
+Content-Type: text/plain
+
+UserName
+--WebAppBoundary
+Content-Disposition: form-data; name="image"; filename="test-image.webp"
+Content-Type: image/webp
+
+< ./temp/test-image.webp
+--WebAppBoundary--
