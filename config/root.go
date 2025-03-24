@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/joho/godotenv"
 	"github.com/naoina/toml"
 	"os"
 )
@@ -25,6 +26,8 @@ type Config struct {
 }
 
 func NewConfig(path string) *Config {
+	_ = godotenv.Load(".env")
+
 	c := new(Config)
 
 	if f, err := os.Open(path); err != nil {
@@ -32,6 +35,8 @@ func NewConfig(path string) *Config {
 	} else if err = toml.NewDecoder(f).Decode(c); err != nil {
 		panic(err)
 	} else {
+		c.Aws.Key = os.Getenv("AWS_ACCESS_KEY_ID")
+		c.Aws.SecretKey = os.Getenv("AWS_SECRET_ACCESS_KEY")
 		return c
 	}
 }

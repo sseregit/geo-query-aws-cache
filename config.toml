@@ -5,8 +5,8 @@ url = "metting:metting@tcp(localhost:3306)/metting"
 [aws]
 key = ""
 secretKey = ""
-region = ""
-bucket = ""
+region = "ap-northeast-2"
+bucket = "geo-query-aws-cache-mysql"
 
 [info]
 port = ":8080"

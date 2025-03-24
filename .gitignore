@@ -3,3 +3,4 @@
 *.iml
 go.sum
 *.env.json
+.env
