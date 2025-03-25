@@ -44,8 +44,18 @@ export const handler = async (event, context) => {
             Body: resizeImage,
             ContentType
         }))
+        return {
+            statusCode: 200,
+            body: "Success",
+            desc: DESC_BUCKET
+        }
     } catch (error) {
         console.log(error)
+        return {
+            statusCode: 400,
+            body: "Failed",
+            desc: DESC_BUCKET
+        }
     }
 
 }
